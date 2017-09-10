@@ -125,6 +125,8 @@ namespace ConsoleBykKorova
                     // Очистка потока
                     while ((char)Console.Read() != '\n') ;
 
+                    Console.BackgroundColor = ConsoleColor.Red;
+
                     Console.Write("\n" + razdel);
                     Console.Write("\nВаш ввод - правильный: ");
                     for (int j = 0; j < seq_player.Count(); ++j) Console.Write(seq_player[j]);
@@ -134,6 +136,9 @@ namespace ConsoleBykKorova
                     Console.Write("\nВы сделали " + step.ToString() + " шагов.\n");
                     Console.Write("\nПОБЕДА!\n");
                     Console.Write(razdel);
+
+                    Console.BackgroundColor = ConsoleColor.Black;
+
                     Console.Write("\n\nХотите повторить?\n");
                     Console.Write("Для повтора введите любой символ или 'q' для выхода: ");
 

@@ -176,9 +176,6 @@ namespace ConsoleBykKorova
                 // Если верно, то - победа!
                 if (byk == SEQ)
                 {
-                    // Очистка входного потока - просто считываем в никуда все, что осталось.
-                    // while ((char)Console.Read() != '\n') ;
-
                     // Подкрашиваем фон в красный цвет для выделения поздравления.
                     Console.BackgroundColor = ConsoleColor.Red;
 

@@ -73,7 +73,7 @@ namespace ConsoleBykKorova
                 byk = 0;
                 korova = 0;
 
-                while ((char)Console.Read() != '\n'); // Очистка буфера ввода.
+                while ((char)Console.Read() != '\n'); // Очистка буфера ввода - просто считываем все,что есть.
                 vvod = true;
 
                 // Считывание ввода игрока и сразу подсчет количества Быков и Коров.
@@ -141,14 +141,15 @@ namespace ConsoleBykKorova
                     }
                 }
 
-                // Условие окончание тура - это количество быков равно 4 (SEQ).
+                // Условие окончание тура - это равенство количества быков 4 (SEQ).
                 // Проверяем это условие после каждого ввода пользователя перед выдачей ответа о "быках" и "коровах".
                 // Если верно, то - победа!
                 if (byk == SEQ)
                 {
-                    // Очистка потока
+                    // Очистка входного потока - просто считываем все, что осталось.
                     while ((char)Console.Read() != '\n') ;
 
+                    // Подкрашиваем фон в красный для выделения поздравления.
                     Console.BackgroundColor = ConsoleColor.Red;
 
                     Console.Write("\n" + razdel);
@@ -161,6 +162,7 @@ namespace ConsoleBykKorova
                     Console.Write("ПОБЕДА!\n");
                     Console.Write(razdel);
 
+                    // Возвращаем цвет фона к черному.
                     Console.BackgroundColor = ConsoleColor.Black;
 
                     Console.Write("\n\nХотите повторить?\n");
@@ -200,9 +202,21 @@ namespace ConsoleBykKorova
                 {
                     // Двигаем курсор, чтобы ответ был на той же строчке, что и ввод игрока.
                     Console.CursorTop--; // На строку назад
-                    Console.CursorLeft = 4; // на 7 позиций от начала вправо.
+                    Console.CursorLeft = 4; // Выставляем курсор после введенных цифр.
 
-                    Console.Write("   Б" + byk.ToString() + "  " + 'К' + korova.ToString() + "                \n");
+                    // Очищаем строку на случай, если игрок ввел больше 4 символов.
+                    // Функция Console.In.Peek() считывает символы из входного потока, не вынимая его из буфера.
+                    // Делаем так, чтобы остался признак конца '\n' в буфере входного потока.
+                    while ((char)Console.In.Peek() != '\n')
+                    {
+                        Console.Read();
+                        Console.Write(' ');
+                    }
+                        
+
+                    Console.CursorLeft = 7; // на 8 позиций от начала вправо (индексация начинается с 0).
+
+                    Console.Write('Б' + byk.ToString() + "  " + 'К' + korova.ToString() + "\n");
 
                     // Увеличиваем счетчик шагов.
                     ++step;

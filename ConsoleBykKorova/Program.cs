@@ -46,16 +46,17 @@ namespace ConsoleBykKorova
             }
 
             // Вечный цикл игры.
-
             while(true)
             {
+                string err = "";
+
                 if (igra)
                 {
                     Random rd = new Random(); // Генератор случайных целых чисел.
 
                     for (int i = 0; i < seq_game.Count(); i++)
                     {
-                        seq_game[i] = rd.Next(0, 9).ToString()[0]; // Возвращает случайное число из диапазона от 0 до 9 (сразу int переводим в char).
+                        seq_game[i] = rd.Next(0, 10).ToString()[0]; // Возвращает случайное число из диапазона от 0 до 9 (сразу int переводим в char).
                         for (int j = 0; j < i; ++j)
                         {
                             if (seq_game[i] == seq_game[j]) { --i; break; } // Игнорируем повтор цифры (это баг - не очень хорошо менять индекс здесь!).
@@ -73,6 +74,7 @@ namespace ConsoleBykKorova
                 korova = 0;
 
                 while ((char)Console.Read() != '\n'); // Очистка буфера ввода.
+                vvod = true;
 
                 // Считывание ввода игрока и сразу подсчет количества Быков и Коров.
                 for (int i = 0; i < seq_player.Count(); ++i)
@@ -90,17 +92,39 @@ namespace ConsoleBykKorova
                     // Проверка символа на корректность ввода (если ввели не целое число).
                     if(!char.IsNumber(seq_player[i]))
                     {
-                        Console.Write("Не верный формат! Повторите ввод: \n");
-
-                        // Очистка - возврат к начальному состоянию для ввода игроком новой последовательности.
-                        for(int j = 0; j < seq_player.Count(); j++) seq_player[j] = '\0';
-                        byk = 0;
-                        korova = 0;
+                        err = "Не верный формат! Повторите ввод: \n";
 
                         // Маркер того, что требуется новый ввод без вывода результата.
                         vvod = false;
+                    }
 
-                        // Экстренный выход из цикла for.
+                    // Проверка на повторение цифр
+                    for(int k = 0; k < i; k++)
+                    {
+                        if(seq_player[k] == seq_player[i])
+                        {
+                            err = "Все цифры должны быть различны! Повторите ввод: \n";
+
+                            // Маркер того, что требуется новый ввод без вывода результата.
+                            vvod = false;
+
+                            // Выход из текущего цикла for.
+                            break;
+                        }
+                    }
+
+                    // Очистка - возврат к начальному состоянию для ввода игроком новой последовательности.
+                    if(!vvod)
+                    {
+                        // Вывод сообщения об ошибке.
+                        Console.Write(err);
+
+                        // Очистка - возврат к начальному состоянию для ввода игроком новой последовательности.
+                        for (int j = 0; j < seq_player.Count(); j++) seq_player[j] = '\0';
+                        byk = 0;
+                        korova = 0;
+
+                        // Экстренный выход из цикла for, считывающего символы для нового ввода.
                         break;
                     }
 
@@ -134,7 +158,7 @@ namespace ConsoleBykKorova
                     for (int j = 0; j < seq_game.Count(); ++j) Console.Write(seq_game[j]);
                     ++step;
                     Console.Write("\nВы сделали " + step.ToString() + " шагов.\n");
-                    Console.Write("\nПОБЕДА!\n");
+                    Console.Write("ПОБЕДА!\n");
                     Console.Write(razdel);
 
                     Console.BackgroundColor = ConsoleColor.Black;
@@ -176,9 +200,9 @@ namespace ConsoleBykKorova
                 {
                     // Двигаем курсор, чтобы ответ был на той же строчке, что и ввод игрока.
                     Console.CursorTop--; // На строку назад
-                    Console.CursorLeft = 7; // на 7 позиций от начала вправо.
+                    Console.CursorLeft = 4; // на 7 позиций от начала вправо.
 
-                    Console.Write('Б' + byk.ToString() + "  " + 'К' + korova.ToString() + "\n");
+                    Console.Write("   Б" + byk.ToString() + "  " + 'К' + korova.ToString() + "                \n");
 
                     // Увеличиваем счетчик шагов.
                     ++step;
